@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taskon</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="app__header">
+      <div class="app__title-group">
+        <p class="app__eyebrow">Workspace</p>
+        <h1 class="app__title">Taskon</h1>
+      </div>
+
+      <div class="app__actions" aria-label="Ações principais">
+        <button class="icon-button" type="button" id="themeToggle" aria-label="Alternar tema" title="Alternar tema">
+          <span class="icon-button__icon" aria-hidden="true">&#9680;</span>
+        </button>
+        <button class="button button--primary" type="button" id="newTaskButton">
+          <span class="button__icon" aria-hidden="true">+</span>
+          Nova tarefa
+        </button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="toolbar" aria-label="Filtros de tarefas">
+        <label class="field field--search" for="searchInput">
+          <span class="field__icon" aria-hidden="true"></span>
+          <input class="field__input" id="searchInput" type="search" placeholder="Buscar tarefas">
+        </label>
+
+        <div class="toolbar__filters">
+          <label class="select-field" for="statusFilter">
+            <span class="select-field__label">Status</span>
+            <select class="select-field__control" id="statusFilter">
+              <option value="all">Todos</option>
+              <option value="todo">To Do</option>
+              <option value="doing">Doing</option>
+              <option value="done">Done</option>
+              <option value="completed">Concluídas</option>
+            </select>
+          </label>
+
+          <label class="select-field" for="priorityFilter">
+            <span class="select-field__label">Prioridade</span>
+            <select class="select-field__control" id="priorityFilter">
+              <option value="all">Todas</option>
+              <option value="low">Baixa</option>
+              <option value="medium">Média</option>
+              <option value="high">Alta</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="board" id="board" aria-label="Quadro kanban">
+        <article class="board-column" data-status="todo">
+          <header class="board-column__header">
+            <div>
+              <p class="board-column__kicker">Backlog</p>
+              <h2 class="board-column__title">To Do</h2>
+            </div>
+            <span class="board-column__count" id="count-todo">0</span>
+          </header>
+          <div class="board-column__dropzone" data-dropzone="todo" aria-label="Tarefas To Do"></div>
+        </article>
+
+        <article class="board-column" data-status="doing">
+          <header class="board-column__header">
+            <div>
+              <p class="board-column__kicker">Em progresso</p>
+              <h2 class="board-column__title">Doing</h2>
+            </div>
+            <span class="board-column__count" id="count-doing">0</span>
+          </header>
+          <div class="board-column__dropzone" data-dropzone="doing" aria-label="Tarefas Doing"></div>
+        </article>
+
+        <article class="board-column" data-status="done">
+          <header class="board-column__header">
+            <div>
+              <p class="board-column__kicker">Finalizadas</p>
+              <h2 class="board-column__title">Done</h2>
+            </div>
+            <span class="board-column__count" id="count-done">0</span>
+          </header>
+          <div class="board-column__dropzone" data-dropzone="done" aria-label="Tarefas Done"></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="task-dialog" id="taskDialog" aria-labelledby="dialogTitle">
+    <form class="task-form" id="taskForm" method="dialog">
+      <header class="task-form__header">
+        <div>
+          <p class="task-form__eyebrow">Tarefa</p>
+          <h2 class="task-form__title" id="dialogTitle">Nova tarefa</h2>
+        </div>
+        <button class="icon-button" type="button" id="closeDialogButton" aria-label="Fechar" title="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </header>
+
+      <input type="hidden" id="taskId">
+
+      <label class="form-field" for="taskTitle">
+        <span class="form-field__label">Título</span>
+        <input class="form-field__control" id="taskTitle" name="title" type="text" maxlength="80" required>
+      </label>
+
+      <label class="form-field" for="taskDescription">
+        <span class="form-field__label">Descrição</span>
+        <textarea class="form-field__control form-field__control--textarea" id="taskDescription" name="description" rows="4" maxlength="260"></textarea>
+      </label>
+
+      <div class="task-form__grid">
+        <label class="form-field" for="taskStatus">
+          <span class="form-field__label">Coluna</span>
+          <select class="form-field__control" id="taskStatus" name="status">
+            <option value="todo">To Do</option>
+            <option value="doing">Doing</option>
+            <option value="done">Done</option>
+          </select>
+        </label>
+
+        <label class="form-field" for="taskPriority">
+          <span class="form-field__label">Prioridade</span>
+          <select class="form-field__control" id="taskPriority" name="priority">
+            <option value="low">Baixa</option>
+            <option value="medium">Média</option>
+            <option value="high">Alta</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="checkbox-field" for="taskCompleted">
+        <input class="checkbox-field__control" id="taskCompleted" type="checkbox">
+        <span class="checkbox-field__mark" aria-hidden="true"></span>
+        <span class="checkbox-field__label">Marcar como concluída</span>
+      </label>
+
+      <footer class="task-form__footer">
+        <button class="button button--ghost" type="button" id="cancelButton">Cancelar</button>
+        <button class="button button--primary" type="submit">Salvar</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
