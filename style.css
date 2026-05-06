@@ -1,0 +1,759 @@
+:root {
+  /* Design tokens keep the visual system consistent across light and dark mode. */
+  color-scheme: light;
+  --color-page: #f5f5f7;
+  --color-surface: #ffffff;
+  --color-surface-soft: #fbfbfd;
+  --color-text: #1d1d1f;
+  --color-muted: #6e6e73;
+  --color-border: #d8d8de;
+  --color-border-strong: #b8b8c0;
+  --color-shadow: rgba(0, 0, 0, 0.08);
+  --color-accent: #0071e3;
+  --color-accent-strong: #005bb8;
+  --color-danger: #c9362d;
+  --priority-low: #34c759;
+  --priority-medium: #ffb340;
+  --priority-high: #ff453a;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --motion-fast: 160ms;
+  --motion-base: 240ms;
+  --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-page: #101012;
+  --color-surface: #1c1c1e;
+  --color-surface-soft: #242427;
+  --color-text: #f5f5f7;
+  --color-muted: #a1a1a6;
+  --color-border: #3a3a3c;
+  --color-border-strong: #525256;
+  --color-shadow: rgba(0, 0, 0, 0.28);
+  --color-accent: #0a84ff;
+  --color-accent-strong: #5eb0ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--color-page);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--color-page);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-size: 16px;
+  letter-spacing: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: var(--space-5);
+}
+
+.app__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-3) 0 var(--space-6);
+}
+
+.app__title-group {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.app__eyebrow,
+.board-column__kicker,
+.task-form__eyebrow {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.app__title,
+.board-column__title,
+.task-form__title {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.app__title {
+  font-size: clamp(2rem, 7vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.app__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.button,
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  /* Button microinteraction: quick color and press feedback without layout shift. */
+  transition:
+    background-color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
+  will-change: transform;
+}
+
+.button {
+  min-height: 44px;
+  gap: var(--space-2);
+  padding: 0 var(--space-5);
+  font-weight: 650;
+}
+
+.button:active,
+.icon-button:active {
+  transform: scale(0.98);
+}
+
+.button--primary {
+  background: var(--color-text);
+  color: var(--color-surface);
+}
+
+.button--primary:hover,
+.button--primary:focus-visible {
+  background: var(--color-accent);
+  box-shadow: 0 10px 26px -22px var(--color-accent);
+}
+
+.button--ghost {
+  background: transparent;
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.button--ghost:hover,
+.button--ghost:focus-visible {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-soft);
+}
+
+.button__icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.icon-button {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+  font-size: 1.2rem;
+}
+
+.icon-button:hover,
+.icon-button:focus-visible {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-soft);
+}
+
+.workspace {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.toolbar {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.toolbar__filters {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.field,
+.select-field,
+.form-field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.field--search {
+  position: relative;
+}
+
+.field__icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  color: var(--color-muted);
+  transform: translateY(-50%);
+  transition: color var(--motion-fast) ease, transform var(--motion-fast) ease;
+  pointer-events: none;
+}
+
+.field__icon::before {
+  position: absolute;
+  inset: 1px 4px 4px 1px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  content: "";
+}
+
+.field__icon::after {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 7px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  content: "";
+  transform: rotate(45deg);
+  transform-origin: right center;
+}
+
+.field__input,
+.select-field__control,
+.form-field__control {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  outline: none;
+  /* Form focus feedback gives a clear target while staying visually quiet. */
+  transition:
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    background-color var(--motion-fast) ease;
+}
+
+.field__input {
+  padding: 0 var(--space-4) 0 2.65rem;
+}
+
+.select-field__control,
+.form-field__control {
+  padding: 0 var(--space-4);
+}
+
+.form-field__control--textarea {
+  min-height: 118px;
+  padding-top: var(--space-3);
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.field__input:focus,
+.select-field__control:focus,
+.form-field__control:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+
+.field--search:focus-within .field__icon,
+.field--search.is-typing .field__icon {
+  /* Search feedback confirms focus and typing with a tiny icon response. */
+  color: var(--color-accent);
+  transform: translateY(-50%) scale(1.04);
+}
+
+.select-field__label,
+.form-field__label {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.board {
+  /* Mobile-first: columns stack, then become a three-column grid on desktop. */
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.board-column {
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 86%, transparent);
+  box-shadow: 0 18px 50px -40px var(--color-shadow);
+  transition: border-color var(--motion-base) ease, box-shadow var(--motion-base) ease;
+}
+
+.board-column.is-over {
+  /* Drag target feedback makes the destination column clear before dropping. */
+  border-color: color-mix(in srgb, var(--color-accent) 42%, var(--color-border));
+  box-shadow: 0 24px 58px -42px color-mix(in srgb, var(--color-accent) 38%, transparent);
+}
+
+.board-column__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 86px;
+  padding: var(--space-5) var(--space-5) var(--space-3);
+}
+
+.board-column__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.board-column__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 var(--space-2);
+  border-radius: 999px;
+  background: var(--color-surface-soft);
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  transform-origin: center;
+}
+
+.board-column__count.is-updating {
+  /* Counter pulse makes changing totals noticeable without becoming noisy. */
+  animation: count-pop var(--motion-base) var(--motion-ease);
+}
+
+.board-column__dropzone {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  min-height: 180px;
+  padding: var(--space-3);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  transition: background-color var(--motion-base) ease, box-shadow var(--motion-base) ease;
+}
+
+.board-column__dropzone.is-over {
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 24%, transparent);
+}
+
+.task-card {
+  /* Task cards are the main repeated surface, with subtle lift on interaction. */
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  min-height: 150px;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: 0 16px 36px -34px var(--color-shadow);
+  /* Card motion uses transform and opacity for smoother, cheaper rendering. */
+  transition:
+    border-color var(--motion-base) ease,
+    box-shadow var(--motion-base) ease,
+    background-color var(--motion-base) ease,
+    transform var(--motion-base) var(--motion-ease),
+    opacity var(--motion-base) ease;
+  will-change: transform, opacity;
+}
+
+.task-card:hover,
+.task-card:focus-within {
+  border-color: var(--color-border-strong);
+  box-shadow: 0 22px 48px -30px var(--color-shadow);
+  transform: translateY(-3px);
+}
+
+.task-card.is-dragging {
+  opacity: 0.55;
+  transform: scale(0.985);
+}
+
+.task-card.is-new {
+  /* New tasks fade and slide in, then flash softly so the user can locate them. */
+  animation:
+    card-enter var(--motion-base) var(--motion-ease) both,
+    task-highlight 900ms ease-out both;
+}
+
+.task-card.is-highlighted {
+  /* Moved or edited tasks get a quieter highlight without re-entering the layout. */
+  animation: task-highlight 800ms ease-out both;
+}
+
+.task-card.is-removing {
+  /* Delete waits for this exit animation before the data is removed. */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(14px) scale(0.98);
+}
+
+.task-card.is-completed {
+  background: color-mix(in srgb, var(--color-surface) 88%, var(--color-page));
+}
+
+.task-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.task-card__content {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.task-card__title {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.task-card.is-completed .task-card__title {
+  color: var(--color-muted);
+  text-decoration: line-through;
+}
+
+.task-card__description {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.task-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.priority {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.priority::before {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  content: "";
+}
+
+.priority--low::before {
+  background: var(--priority-low);
+}
+
+.priority--medium::before {
+  background: var(--priority-medium);
+}
+
+.priority--high::before {
+  background: var(--priority-high);
+}
+
+.task-card__actions {
+  display: inline-flex;
+  gap: var(--space-1);
+  flex: 0 0 auto;
+}
+
+.task-card__button {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-muted);
+  transition:
+    background-color var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
+}
+
+.task-card__button:hover,
+.task-card__button:focus-visible {
+  background: var(--color-surface-soft);
+  color: var(--color-text);
+  transform: translateY(-1px);
+}
+
+.task-card__button:active {
+  transform: scale(0.94);
+}
+
+.task-card__button--danger:hover,
+.task-card__button--danger:focus-visible {
+  color: var(--color-danger);
+}
+
+.empty-state {
+  display: grid;
+  place-items: center;
+  min-height: 128px;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-muted);
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.task-dialog {
+  width: min(calc(100vw - 2rem), 560px);
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 30px 80px -48px rgba(0, 0, 0, 0.4);
+}
+
+.task-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(14px);
+}
+
+.task-form {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+
+.task-form__header,
+.task-form__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.task-form__title {
+  font-size: 1.35rem;
+}
+
+.task-form__grid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.checkbox-field__control {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.checkbox-field__mark {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 50%;
+  transition:
+    background-color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
+}
+
+.checkbox-field__mark::after {
+  color: #ffffff;
+  font-size: 0.8rem;
+  content: "\2713";
+  opacity: 0;
+  transform: scale(0.75);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.checkbox-field__control:checked + .checkbox-field__mark {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  transform: scale(1.03);
+}
+
+.checkbox-field__control:checked + .checkbox-field__mark::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.checkbox-field__control:focus-visible + .checkbox-field__mark {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 18%, transparent);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-5);
+  z-index: 20;
+  min-width: min(320px, calc(100vw - 2rem));
+  max-width: calc(100vw - 2rem);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-text);
+  color: var(--color-surface);
+  font-size: 0.92rem;
+  font-weight: 650;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 12px);
+  transition: opacity var(--motion-fast) ease, transform var(--motion-fast) var(--motion-ease);
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes task-highlight {
+  0% {
+    border-color: color-mix(in srgb, var(--color-accent) 58%, var(--color-border));
+    box-shadow:
+      0 18px 44px -32px var(--color-shadow),
+      0 0 0 4px color-mix(in srgb, var(--color-accent) 16%, transparent);
+  }
+
+  100% {
+    border-color: var(--color-border);
+    box-shadow: 0 16px 36px -34px var(--color-shadow);
+  }
+}
+
+@keyframes count-pop {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.88);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (min-width: 680px) {
+  .app {
+    padding: var(--space-8);
+  }
+
+  .app__header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .toolbar {
+    grid-template-columns: minmax(260px, 1fr) auto;
+    align-items: end;
+  }
+
+  .toolbar__filters,
+  .task-form__grid {
+    grid-template-columns: repeat(2, minmax(160px, 1fr));
+  }
+}
+
+@media (min-width: 980px) {
+  .board {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .board-column__dropzone {
+    min-height: calc(100vh - 320px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
